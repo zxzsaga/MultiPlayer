@@ -6,15 +6,19 @@ using Prototype.NetworkLobby;
 
 public class Player : NetworkBehaviour {
     
-    public string playerName;
-
+    // 运行时
     public LobbyManager lobbyManager;
+    private SceneIntroducer sceneIntroducer;
+    private MessageHandler messageHandler;
 
-    NetworkClient client;
-    MessageHandler messageHandler;
+    // 静态绑定
 
     void Start() {
-        client = lobbyManager.client;
-        messageHandler.client = client;
+        sceneIntroducer = GameObject.Find("SceneIntroducer").GetComponent<SceneIntroducer>();
+        sceneIntroducer.messageHandler.client = lobbyManager.client;
+    }
+
+    public void SpawnGameObject(GameObject go) {
+        NetworkServer.Spawn(go);
     }
 }

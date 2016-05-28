@@ -16,7 +16,8 @@ public class MessageHandler : MonoBehaviour {
         #if DEBUG_PLAY_SCENE
         return;
         #endif
-        NetworkServer.RegisterHandler(PlayerMessageType.Chat, OnChatMessage);
+
+        client.RegisterHandler(PlayerMessageType.Chat, OnChatMessage);
     }
 
     public void SendIntegerMessage(short type, int content) {
@@ -24,6 +25,7 @@ public class MessageHandler : MonoBehaviour {
         print("SendIntegerMessage, type: " + type + ", content: " + content);
         return;
         #endif
+
         IntegerMessage intMsg = new IntegerMessage(content);
         client.Send(type, intMsg);
     }
@@ -31,9 +33,9 @@ public class MessageHandler : MonoBehaviour {
     public void SendStringMessage(short type, string content) {
         #if DEBUG_PLAY_SCENE
         print("SendStringMessage, type: " + type + ", content: " + content);
-        chatView.AddMessage(content);
         return;
         #endif
+
         StringMessage strMsg = new StringMessage(content);
         client.Send(type, strMsg);
     }
@@ -44,6 +46,6 @@ public class MessageHandler : MonoBehaviour {
 
     public void OnChatMessage(NetworkMessage msg) {
         StringMessage chatMsg = msg.ReadMessage<StringMessage>();
-        Debug.Log("=======: " + chatMsg.value);
+        chatView.AddMessage(chatMsg.value);
     }
 }
