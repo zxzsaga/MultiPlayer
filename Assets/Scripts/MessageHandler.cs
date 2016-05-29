@@ -5,8 +5,9 @@ using System.Collections;
 
 public class MessageHandler : MonoBehaviour {
 
-    public NetworkClient client;
-    public ChatView chatView;
+    public NetworkClient client;    // Player 的 Start 函数里赋值
+
+    public SceneIntroducer sceneIntroducer;
 
     public class PlayerMessageType {
         public const short Chat = 1001;
@@ -16,8 +17,10 @@ public class MessageHandler : MonoBehaviour {
         #if DEBUG_PLAY_SCENE
         return;
         #endif
+    }
 
-        client.RegisterHandler(PlayerMessageType.Chat, OnChatMessage);
+    public void RegisterHandlers() {
+        NetworkServer.RegisterHandler(PlayerMessageType.Chat, OnChatMessage);
     }
 
     public void SendIntegerMessage(short type, int content) {
@@ -43,9 +46,9 @@ public class MessageHandler : MonoBehaviour {
     public void SendChatMessage(string content) {
         SendStringMessage(PlayerMessageType.Chat, content);
     }
-
+        
     public void OnChatMessage(NetworkMessage msg) {
         StringMessage chatMsg = msg.ReadMessage<StringMessage>();
-        chatView.AddMessage(chatMsg.value);
+        print("OnChatMessage: " + chatMsg.value);
     }
 }

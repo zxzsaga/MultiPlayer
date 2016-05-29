@@ -1,19 +1,25 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.Networking.NetworkSystem;
 using UnityEngine.UI;
 using System.Collections;
 
-public class ChatView : MonoBehaviour {
+public class ChatView : NetworkBehaviour {
 
     public Transform viewContent;
     public GameObject chatMessagePrefab;
 
-    public void AddMessage(string msg) {
+    [Command]
+    public void CmdAddMessage(string msg) {
         GameObject chatMessage = (GameObject)Instantiate(chatMessagePrefab, Vector3.zero, Quaternion.identity);
+        NetworkServer.Spawn(chatMessage);
+        RpcSyncChatMessage(chatMessage, msg);
+    }
+
+    [ClientRpc]
+    public void RpcSyncChatMessage(GameObject chatMessage, string msg) {
         chatMessage.transform.SetParent(viewContent);
         chatMessage.GetComponent<Text>().text = msg;
-
-        NetworkServer.Spawn(chatMessage);
     }
+
+
 }

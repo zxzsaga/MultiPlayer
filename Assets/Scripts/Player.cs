@@ -5,17 +5,19 @@ using System.Collections;
 using Prototype.NetworkLobby;
 
 public class Player : NetworkBehaviour {
-    
-    // 运行时
-    public LobbyManager lobbyManager;
+
+    private LobbyManager lobbyManager;
     private SceneIntroducer sceneIntroducer;
     private MessageHandler messageHandler;
 
-    // 静态绑定
-
     void Start() {
+        lobbyManager = GameObject.Find("LobbyManager").GetComponent<LobbyManager>();
         sceneIntroducer = GameObject.Find("SceneIntroducer").GetComponent<SceneIntroducer>();
-        sceneIntroducer.messageHandler.client = lobbyManager.client;
+        messageHandler = GetComponent<MessageHandler>();
+
+        messageHandler.client = lobbyManager.client;
+        messageHandler.RegisterHandlers();
+        messageHandler.sceneIntroducer = sceneIntroducer;
     }
 
     public void SpawnGameObject(GameObject go) {

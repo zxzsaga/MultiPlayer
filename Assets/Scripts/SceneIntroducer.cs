@@ -2,5 +2,6 @@
 
 public class SceneIntroducer : MonoBehaviour {
 
-    public MessageHandler messageHandler;
+    public ChatView chatView;
+    public ChatInput chatInput;
 }

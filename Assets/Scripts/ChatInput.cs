@@ -4,9 +4,9 @@ using System.Collections;
 
 public class ChatInput : MonoBehaviour {
 
-    public MessageHandler messageHandler;
+    public ChatView chatView;
 
-    InputField inputField;
+    private InputField inputField;
 
     void Start() {
         inputField = GetComponent<InputField>();
@@ -16,7 +16,7 @@ public class ChatInput : MonoBehaviour {
     void CheckAndSendMessage(string text) {
         bool inputComplete = (text != "" && Input.GetKey(KeyCode.Return));
         if (inputComplete) {
-            messageHandler.SendChatMessage(text);
+            chatView.CmdAddMessage(text);
             inputField.text = "";   
         }
     }
